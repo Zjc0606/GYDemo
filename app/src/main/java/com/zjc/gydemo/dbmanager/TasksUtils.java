@@ -1,11 +1,14 @@
 package com.zjc.gydemo.dbmanager;
 
 import android.content.Context;
+import android.database.Cursor;
 
 import com.orhanobut.logger.Logger;
 import com.zjc.greendao.dao.TasksDao;
+import com.zjc.greendao.entity.Plan;
 import com.zjc.greendao.entity.Tasks;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.greenrobot.dao.query.QueryBuilder;
@@ -91,7 +94,7 @@ public class TasksUtils {
     }
 
     /**
-     * 根据设备类型查询对应的设备编码
+     * 根据设备类型查询对应的设备
      */
     public List<Tasks> queryTasks(String type){
         //查询构建器
@@ -99,6 +102,45 @@ public class TasksUtils {
         List<Tasks> mTasksList=builder.where(TasksDao.Properties.Type.eq(type)).list();
         Logger.d(mTasksList.size()+"");
         return mTasksList;
+    }
+
+    /**
+     * 根据设备编码查询设备并去重
+     * @param planList s设备编码及已点检次数
+     * @return 返回任务列表显示的设备
+     */
+    public  List<String> getDescriptions(List<Plan> planList) {
+        List<String> result = new ArrayList<>();
+        Cursor cur;
+        for (Plan plan:planList) {
+            cur = manager.getDaoSession().getDatabase().rawQuery("SELECT DISTINCT DESCRIPTION FROM Tasks WHERE " +
+                    "ASSETNUM='"+plan.getAssetnum()+"'", null);
+            while(cur.moveToNext())
+            {
+                if("停运".equals(plan.getResult())){
+                    result.add(cur.getString(0)+" 已停运");
+                }else{
+                    result.add(cur.getString(0)+" 当勤已点"+result+"次");
+                }
+            }
+            cur.close();
+        }
+        return result;
+    }
+
+    //根据RFID编码查询设备
+    public String getDevice(String m_strresult){
+        String device=null;
+        Cursor cur = manager.getDaoSession().getDatabase().rawQuery("SELECT DISTINCT DESCRIPTION FROM Tasks WHERE " +
+                "PHYNUM='"+m_strresult+"'", null);
+        while(cur.moveToNext())
+        {
+            device=cur.getString(0);
+        }
+        cur.close();
+//        Logger.d(list.size()+"");
+//        Logger.d(list.toString());
+        return device;
     }
 
     /**

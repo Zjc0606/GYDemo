@@ -96,17 +96,17 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 if (responseBody != null) {
-                    String reuslt = new String(responseBody);
-                    Logger.json(reuslt);
-                    if (reuslt.length() == 3) {
+                    String result = new String(responseBody);
+                    Logger.json(result);
+                    if (result.length() == 3) {
                         Toast.makeText(LoginActivity.this, "用户名不存在", Toast.LENGTH_SHORT).show();
-                    } else if (reuslt.length() == 4) {
+                    } else if (result.length() == 4) {
                         Toast.makeText(LoginActivity.this, "密码错误", Toast.LENGTH_SHORT).show();
                     } else {
                         Gson gson = new Gson();
                         Type type = new TypeToken<ArrayList<Tasks>>() {}.getType();
                         try {
-                            JSONObject jsonObject = new JSONObject(reuslt);
+                            JSONObject jsonObject = new JSONObject(result);
                             ArrayList<Tasks> tasksList = gson.fromJson(jsonObject.getString("Assets"), type);
                             tasksUtils.insertMultTasks(tasksList);
                         } catch (JSONException e) {
