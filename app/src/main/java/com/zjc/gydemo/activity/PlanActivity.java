@@ -109,7 +109,7 @@ public class PlanActivity extends AppCompatActivity {
             mPlanBean = new PlanBean();
             mPlanBean.setAssetnum(tasks.getAssetnum());
             mPlanBean.setRegular(mQin);
-            mPlanBean.setRegular(mUsername);
+            mPlanBean.setExecuteby(mUsername);
             mPlanBean.setType(mType);
             mPlanBeanList.add(mPlanBean);
         }
@@ -128,7 +128,7 @@ public class PlanActivity extends AppCompatActivity {
         StringEntity entity = new StringEntity(jsonParam.toString(), "utf-8");//解决中文乱码问题
         AsyncHttpClient client = new AsyncHttpClient();
         mNet = netaddressUtils.queryNet();
-        String adress="http://172.23.8.133:8080/web/";
+        String adress="http://172.23.5.70:8080/GongYi/task/getTask.action";
         client.post(PlanActivity.this, adress, entity, "application/json;charset=utf-8", new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -139,8 +139,6 @@ public class PlanActivity extends AppCompatActivity {
                 if (responseBody != null) {
                     String result = new String(responseBody);
                     descUtils.deleteDesc();
-                    Logger.json(result);
-
                     Gson gson = new Gson();
                     Type typeTaskTab = new TypeToken<ArrayList<Tasktab>>() {
                     }.getType();
@@ -148,10 +146,11 @@ public class PlanActivity extends AppCompatActivity {
                     }.getType();
                     try {
                         JSONObject jsonObject = new JSONObject(result);
+                        Logger.json(jsonObject.toString());
                         ArrayList<Tasktab> taskTabArrayList = gson.fromJson(jsonObject.getString("StdGY"), typeTaskTab);
                         ArrayList<Plan> planArrayList = gson.fromJson(jsonObject.getString("PlanGY"), typePlan);
-                        Logger.d("标准表",taskTabArrayList);
-                        Logger.d("计划表",planArrayList);
+                        Logger.d(taskTabArrayList.toString());
+                        Logger.d(planArrayList.toString());
                         tasktabUtils.insertMultTaskTab(taskTabArrayList);
                         planUtils.insertMultPlan(planArrayList);
                     } catch (JSONException e) {

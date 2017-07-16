@@ -87,7 +87,7 @@ public class LoginActivity extends AppCompatActivity {
         params.put("password", mPassword);
         params.put("pro", mPro);
         mNet = netaddressUtils.queryNet();
-        String adress="http://172.23.8.133:8080/web/";
+        String adress="http://172.23.5.70:8080/GongYi/login/userLogin.action";
         Logger.d(params.toString() + ":" + mNet);
         AsyncHttpClient client = new AsyncHttpClient();
         client.get(adress, params, new AsyncHttpResponseHandler() {

@@ -63,8 +63,8 @@ public class TaskFragment extends Fragment {
         Logger.init(TAG);
         planUtils = new PlanUtils(getContext());
         tasksUtils = new TasksUtils(getContext());
-        setDevice();//显示设备
-
+//        setDevice();//显示设备
+        Logger.d(TAG,"执行");
 
         return view;
     }
