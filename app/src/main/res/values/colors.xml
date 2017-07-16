@@ -7,4 +7,6 @@
     <color name="abs__bright_foreground_disabled_holo_dark">#ff4c4c4c</color>
     <color name="green">#ff32b9aa</color>
     <color name="white">#ffffffff</color>
+    <color name="black2">#ff666666</color>
+    <color name="red1">#ff7f00</color>
 </resources>

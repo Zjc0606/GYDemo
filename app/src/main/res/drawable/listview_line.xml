@@ -2,5 +2,5 @@
 <inset xmlns:android="http://schemas.android.com/apk/res/android" 
 android:insetLeft="35dp"
 android:insetRight="35dp"
-android:drawable="#ff666666" >
+android:drawable="@color/black2" >
 </inset>

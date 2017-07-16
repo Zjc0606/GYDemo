@@ -80,12 +80,12 @@ public class PlanActivity extends AppCompatActivity {
         mList1.add("二勤");
         mList1.add("三勤");
         mList2 = new ArrayList<>();
-        mList1.add("转炉");
-        mList1.add("阳极炉");
+        mList2.add("转炉");
+        mList2.add("阳极炉");
 
         //为下拉列表定义一个适配器，这里就用到里前面定义的list。
         mAdapter1 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mList1);
-        mAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mList1);
+        mAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mList2);
         //为适配器设置下拉列表下拉时的菜单样式。
         mAdapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -95,14 +95,16 @@ public class PlanActivity extends AppCompatActivity {
 
     }
 
-    @OnClick(R.id.bt_planSubmit)
-    void planSubmit() throws JSONException {
+    @OnClick(R.id.bt_submit)
+    public void planSubmit(){
         showDialog();//显示等待弹框
         mQin = mSpinner1.getSelectedItem().toString().trim();
         mType = mSpinner2.getSelectedItem().toString().trim().equals("转炉") ? "CF" : "RF";
         mUsername = mIntent.getStringExtra("username");
         mTasksList = tasksUtils.queryTasks(mType);
+        Logger.d(mTasksList.toString());
         PlanBean mPlanBean;
+        mPlanBeanList=new ArrayList<>();
         for (Tasks tasks : mTasksList) {
             mPlanBean = new PlanBean();
             mPlanBean.setAssetnum(tasks.getAssetnum());
@@ -112,16 +114,22 @@ public class PlanActivity extends AppCompatActivity {
             mPlanBeanList.add(mPlanBean);
         }
         JSONObject jsonParam = new JSONObject();
-        Gson gson = new Gson();
-        jsonParam.put("GYrecord", "");
-        jsonParam.put("DQrecord", "");
-        jsonParam.put("PlanSet", gson.toJson(mPlanBeanList));
-        jsonParam.put("Task", "");
-        jsonParam.put("DQnoplan", "");
+        try {
+            Gson gson = new Gson();
+            jsonParam.put("GYrecord", "");
+            jsonParam.put("DQrecord", "");
+            jsonParam.put("PlanSet", gson.toJson(mPlanBeanList));
+            jsonParam.put("Task", "");
+            jsonParam.put("DQnoplan", "");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Logger.json(jsonParam.toString());
         StringEntity entity = new StringEntity(jsonParam.toString(), "utf-8");//解决中文乱码问题
         AsyncHttpClient client = new AsyncHttpClient();
         mNet = netaddressUtils.queryNet();
-        client.post(PlanActivity.this, mNet, entity, "application/json;charset=utf-8", new AsyncHttpResponseHandler() {
+        String adress="http://172.23.8.133:8080/web/";
+        client.post(PlanActivity.this, adress, entity, "application/json;charset=utf-8", new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 if (statusCode == 200) {
@@ -142,6 +150,8 @@ public class PlanActivity extends AppCompatActivity {
                         JSONObject jsonObject = new JSONObject(result);
                         ArrayList<Tasktab> taskTabArrayList = gson.fromJson(jsonObject.getString("StdGY"), typeTaskTab);
                         ArrayList<Plan> planArrayList = gson.fromJson(jsonObject.getString("PlanGY"), typePlan);
+                        Logger.d("标准表",taskTabArrayList);
+                        Logger.d("计划表",planArrayList);
                         tasktabUtils.insertMultTaskTab(taskTabArrayList);
                         planUtils.insertMultPlan(planArrayList);
                     } catch (JSONException e) {

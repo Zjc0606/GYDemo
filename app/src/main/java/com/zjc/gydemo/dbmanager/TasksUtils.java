@@ -3,7 +3,6 @@ package com.zjc.gydemo.dbmanager;
 import android.content.Context;
 import android.database.Cursor;
 
-import com.orhanobut.logger.Logger;
 import com.zjc.greendao.dao.TasksDao;
 import com.zjc.greendao.entity.Plan;
 import com.zjc.greendao.entity.Tasks;
@@ -100,7 +99,7 @@ public class TasksUtils {
         //查询构建器
         QueryBuilder<Tasks> builder=manager.getDaoSession().queryBuilder(Tasks.class);
         List<Tasks> mTasksList=builder.where(TasksDao.Properties.Type.eq(type)).list();
-        Logger.d(mTasksList.size()+"");
+//        Logger.d(mTasksList.size()+"");
         return mTasksList;
     }
 

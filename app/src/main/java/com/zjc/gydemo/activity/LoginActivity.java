@@ -61,9 +61,6 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         Logger.init(TAG);
-        Intent intent=new Intent(LoginActivity.this,PlanActivity.class);
-        intent.putExtra("username",mUser);
-        startActivity(intent);
         tasksUtils = new TasksUtils(this);
         tasktabUtils = new TasktabUtils(this);
         devprtlineUtils = new DevprtlineUtils(this);
@@ -90,9 +87,10 @@ public class LoginActivity extends AppCompatActivity {
         params.put("password", mPassword);
         params.put("pro", mPro);
         mNet = netaddressUtils.queryNet();
+        String adress="http://172.23.8.133:8080/web/";
         Logger.d(params.toString() + ":" + mNet);
         AsyncHttpClient client = new AsyncHttpClient();
-        client.get(mNet, params, new AsyncHttpResponseHandler() {
+        client.get(adress, params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 if (responseBody != null) {
@@ -112,6 +110,9 @@ public class LoginActivity extends AppCompatActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+                        Intent intent=new Intent(LoginActivity.this,PlanActivity.class);
+                        intent.putExtra("username",mUser);
+                        startActivity(intent);
                     }
                 }
             }
