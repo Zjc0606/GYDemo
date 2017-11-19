@@ -128,7 +128,7 @@ public class PlanActivity extends AppCompatActivity {
         StringEntity entity = new StringEntity(jsonParam.toString(), "utf-8");//解决中文乱码问题
         AsyncHttpClient client = new AsyncHttpClient();
         mNet = netaddressUtils.queryNet();
-        String adress="http://172.23.5.70:8080/GongYi/task/getTask.action";
+        String adress="http://192.168.56.1:8080/wsn/task.action";
         client.post(PlanActivity.this, adress, entity, "application/json;charset=utf-8", new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -146,11 +146,11 @@ public class PlanActivity extends AppCompatActivity {
                     }.getType();
                     try {
                         JSONObject jsonObject = new JSONObject(result);
-                        Logger.json(jsonObject.toString());
+//                        Logger.json(jsonObject.toString());
                         ArrayList<Tasktab> taskTabArrayList = gson.fromJson(jsonObject.getString("StdGY"), typeTaskTab);
                         ArrayList<Plan> planArrayList = gson.fromJson(jsonObject.getString("PlanGY"), typePlan);
-                        Logger.d(taskTabArrayList.toString());
-                        Logger.d(planArrayList.toString());
+//                        Logger.d(taskTabArrayList.toString());
+//                        Logger.d(planArrayList.toString());
                         tasktabUtils.insertMultTaskTab(taskTabArrayList);
                         planUtils.insertMultPlan(planArrayList);
                     } catch (JSONException e) {

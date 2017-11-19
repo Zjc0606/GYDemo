@@ -87,7 +87,8 @@ public class LoginActivity extends AppCompatActivity {
         params.put("password", mPassword);
         params.put("pro", mPro);
         mNet = netaddressUtils.queryNet();
-        String adress="http://172.23.5.70:8080/GongYi/login/userLogin.action";
+        String adress="http://192.168.56.1:8080/wsn/login.action";
+//        String adress="http://192.168.56.1:8080/GongYi/login/userLogin.action";
         Logger.d(params.toString() + ":" + mNet);
         AsyncHttpClient client = new AsyncHttpClient();
         client.get(adress, params, new AsyncHttpResponseHandler() {
@@ -96,16 +97,18 @@ public class LoginActivity extends AppCompatActivity {
                 if (responseBody != null) {
                     String result = new String(responseBody);
                     Logger.json(result);
-                    if (result.length() == 3) {
+                    if (result.contains("用户名不存在")) {
                         Toast.makeText(LoginActivity.this, "用户名不存在", Toast.LENGTH_SHORT).show();
-                    } else if (result.length() == 4) {
+                    } else if (result.contains("密码错误")) {
                         Toast.makeText(LoginActivity.this, "密码错误", Toast.LENGTH_SHORT).show();
                     } else {
                         Gson gson = new Gson();
                         Type type = new TypeToken<ArrayList<Tasks>>() {}.getType();
                         try {
                             JSONObject jsonObject = new JSONObject(result);
+                            System.out.println("----"+jsonObject.getString("Assets"));
                             ArrayList<Tasks> tasksList = gson.fromJson(jsonObject.getString("Assets"), type);
+                            System.out.println("----"+tasksList);
                             tasksUtils.insertMultTasks(tasksList);
                         } catch (JSONException e) {
                             e.printStackTrace();

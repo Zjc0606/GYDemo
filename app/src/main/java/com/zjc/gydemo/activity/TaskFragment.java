@@ -61,9 +61,9 @@ public class TaskFragment extends Fragment {
         View view =inflater.inflate(R.layout.tab_task,container,false);
         ButterKnife.bind(this,view);
         Logger.init(TAG);
-        planUtils = new PlanUtils(getContext());
-        tasksUtils = new TasksUtils(getContext());
-//        setDevice();//显示设备
+        planUtils = new PlanUtils(getActivity());
+        tasksUtils = new TasksUtils(getActivity());
+        setDevice();//显示设备
         Logger.d(TAG,"执行");
 
         return view;
@@ -72,7 +72,7 @@ public class TaskFragment extends Fragment {
     private void setDevice(){
         List<Plan> planParam= planUtils.getPlanAll();
         taskList=tasksUtils.getDescriptions(planParam);
-        arrayAdapter = new ArrayAdapter<>(getContext(),android.R.layout.simple_expandable_list_item_1,taskList);
+        arrayAdapter = new ArrayAdapter<>(this.getActivity(),android.R.layout.simple_expandable_list_item_1,taskList);
         checkedList.setAdapter(arrayAdapter);
     }
 
@@ -109,7 +109,7 @@ public class TaskFragment extends Fragment {
                         toastFlag=false;
                         final String finalDev=realDev;
                         if("已停运".equals(s[1])){
-                            Dialog dialog = new AlertDialog.Builder(getContext())
+                            Dialog dialog = new AlertDialog.Builder(getActivity())
                                     .setTitle("解除停运？")
                                     .setMessage("当前设备已停运无法点检，点击确认解除停运，点击取消返回任务列表！")
                                     .setPositiveButton("确认", new DialogInterface.OnClickListener() {
@@ -133,7 +133,7 @@ public class TaskFragment extends Fragment {
 //                                            DBUtil.updateUndo(finalDev,num,stopFlag);
 //                                            DBUtil.updateResult(finalDev,"");
                                             setDevice();
-                                            Toast.makeText(getContext(), "已解除，请重新扫卡进行点检！", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getActivity(), "已解除，请重新扫卡进行点检！", Toast.LENGTH_SHORT).show();
 
                                         }
                                     })
@@ -146,7 +146,7 @@ public class TaskFragment extends Fragment {
                             dialog.show();
                             break;//匹配到设备之后停止for循环  下同
                         }else{
-                            Dialog dialog = new AlertDialog.Builder(getContext())
+                            Dialog dialog = new AlertDialog.Builder(getActivity())
                                     .setTitle(realDev)
                                     .setMessage("确定点检当前设备？")
                                     .setPositiveButton("是", new DialogInterface.OnClickListener() {
@@ -180,12 +180,12 @@ public class TaskFragment extends Fragment {
                     }
                 }
                 if(toastFlag){
-                    Toast.makeText(getContext(),"没有匹配的设备！",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(),"没有匹配的设备！",Toast.LENGTH_SHORT).show();
                 }
 
             }else{
                 //标签信息获取失败
-                Toast.makeText(getContext(),"RFID标签信息获取不成功，请重试", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(),"RFID标签信息获取不成功，请重试", Toast.LENGTH_SHORT).show();
             }
             super.handleMessage(msg);
         }

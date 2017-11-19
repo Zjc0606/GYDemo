@@ -119,7 +119,7 @@ public class TasksUtils {
                 if("停运".equals(plan.getResult())){
                     result.add(cur.getString(0)+" 已停运");
                 }else{
-                    result.add(cur.getString(0)+" 当勤已点"+result+"次");
+                    result.add(cur.getString(0)+" 当勤已点"+plan.getResult()+"次");
                 }
             }
             cur.close();
