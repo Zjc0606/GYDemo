@@ -116,11 +116,7 @@ public class PlanActivity extends AppCompatActivity {
         JSONObject jsonParam = new JSONObject();
         try {
             Gson gson = new Gson();
-            jsonParam.put("GYrecord", "");
-            jsonParam.put("DQrecord", "");
             jsonParam.put("PlanSet", gson.toJson(mPlanBeanList));
-            jsonParam.put("Task", "");
-            jsonParam.put("DQnoplan", "");
         } catch (JSONException e) {
             e.printStackTrace();
         }

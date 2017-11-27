@@ -3,7 +3,6 @@ package com.zjc.gydemo.activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.hardware.uhf.magic.reader;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -81,7 +80,7 @@ public class TaskFragment extends Fragment {
         String item=checkedList.getSelectedItem().toString();
         final String s[]=item.split(" ");
         String realDev=s[0];
-        reader.m_handler=mHandler;
+//        reader.m_handler=mHandler;
     }
 
     @OnClick(R.id.submit)

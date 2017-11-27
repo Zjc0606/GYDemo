@@ -8,7 +8,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.orhanobut.logger.Logger;
 
@@ -23,8 +22,8 @@ public class MainActivity extends FragmentActivity {
     LinearLayout mTabHistory;
     @BindView(R.id.id_tab_my)
     LinearLayout mTabMy;
-    @BindView(R.id.top_text)
-    TextView mTopText;
+//    @BindView(R.id.top_text)
+//    TextView mTopText;
 
     @BindView(R.id.id_tab_task_img)
     ImageButton mImgTask;
@@ -91,7 +90,7 @@ public class MainActivity extends FragmentActivity {
                 }else{
                     transaction.show(mFragTask);
                 }
-                mTopText.setText("当前任务信息");
+//                mTopText.setText("当前任务信息");
                 mImgTask.setImageResource(R.drawable.tab_task_pressed);
                 break;
             case 2:
@@ -101,7 +100,7 @@ public class MainActivity extends FragmentActivity {
                 }else{
                     transaction.show(mFragHistory);
                 }
-                mTopText.setText("历史记录查询");
+//                mTopText.setText("历史记录查询");
                 mImgHistory.setImageResource(R.drawable.tab_history_pressed);
 
                 break;
@@ -112,7 +111,7 @@ public class MainActivity extends FragmentActivity {
                 }else{
                     transaction.show(mFragMy);
                 }
-                mTopText.setText("我的账户信息");
+//                mTopText.setText("我的账户信息");
                 mImgMy.setImageResource(R.drawable.tab_my_pressed);
 
                 break;
